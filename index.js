@@ -1,28 +1,39 @@
-new CountdownTimer({
-  selector: '#timer-1',
-  targetDate: new Date('Jul 17, 2019'),
-});
-/*
- * Оставшиеся дни: делим значение UTC на 1000 * 60 * 60 * 24, количество
- * миллисекунд в одном дне (миллисекунды * секунды * минуты * часы)
- */
-const days = Math.floor(time / (1000 * 60 * 60 * 24));
+const refs = {
+  days: document.querySelector('span[data-value="days"]'),
+  hours: document.querySelector('span[data-value="hours"]'),
+  mins: document.querySelector('span[data-value="mins"]'),
+  seconds: document.querySelector('span[data-value="secs"]')
+}
 
-/*
- * Оставшиеся часы: получаем остаток от предыдущего расчета с помощью оператора
- * остатка % и делим его на количество миллисекунд в одном часе
- * (1000 * 60 * 60 = миллисекунды * минуты * секунды)
- */
-const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const targetDate = new Date('Jan 5, 2021 15:37:25').getTime()
 
-/*
- * Оставшиеся минуты: получаем оставшиеся минуты и делим их на количество
- * миллисекунд в одной минуте (1000 * 60 = миллисекунды * секунды)
- */
-const mins = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+const timer = setInterval(function() {
 
-/*
- * Оставшиеся секунды: получаем оставшиеся секунды и делим их на количество
- * миллисекунд в одной секунде (1000)
- */
-const secs = Math.floor((time % (1000 * 60)) / 1000);
+  let now = new Date().getTime();
+
+  const period = targetDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  const days = Math.floor(period / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((period % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const mins = Math.floor((period % (1000 * 60 * 60)) / (1000 * 60));
+  const secs = Math.floor((period % (1000 * 60)) / 1000);
+
+  // Display the result in the element
+  refs.days.textContent = days;
+  refs.hours.textContent = hours;
+  refs.mins.textContent = mins;
+  refs.seconds.textContent = secs;
+
+  // If the count down is finished, write some text
+  if (period < 0) {
+    clearInterval(timer);
+    document.getElementById("timer-1").innerHTML = "EXPIRED";
+  }
+}, 1000);
+
+
+// new CountdownTimer({
+//   selector: '#timer-1',
+//   targetDate: new Date('Jan 5, 2021 15:37:25').getTime()
+// });

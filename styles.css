@@ -1,0 +1,8 @@
+body {
+  font-size: 64px;
+  font-family: arial;
+}
+.timer {
+  display: flex;
+  text-align: center !important;
+}
